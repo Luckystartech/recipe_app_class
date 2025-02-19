@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:recipe_app/screens/auth_screen.dart';
 
 void main() {
@@ -11,9 +12,12 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return  MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: AuthScreen()
+      theme: ThemeData(
+        textTheme: GoogleFonts.robotoCondensedTextTheme()
+      ),
+      home: const AuthScreen()
     );
   }
 }

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:recipe_app/screens/home_screen.dart';
+import 'package:recipe_app/utils/color.dart';
 
 class AuthScreen extends StatelessWidget {
   const AuthScreen({super.key});
@@ -6,7 +8,7 @@ class AuthScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: const Color.fromRGBO(33, 65, 45, 100),
+        backgroundColor: recipeAppPrimaryColor,
         //body
         body: SafeArea(
           child: Padding(
@@ -14,7 +16,8 @@ class AuthScreen extends StatelessWidget {
             child: Column(children: [
               const Text(
                 'Tasty',
-                style: TextStyle(color: Colors.white, fontSize: 44),
+                style: TextStyle(fontSize: 44, color: Colors.white),
+                // style: TextStyle(color: Colors.white, fontSize: 44),
               ),
               const SizedBox(
                 height: 120,
@@ -59,14 +62,22 @@ class AuthScreen extends StatelessWidget {
               const SizedBox(height: 20),
               ElevatedButton.icon(
                 iconAlignment: IconAlignment.end,
-                onPressed: () {},
-                label: const Text('Explore the app', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),),
+                onPressed: () {
+                  Navigator.of(context)
+                      .push(MaterialPageRoute(builder: (context) {
+                    return const HomeScreen();
+                  }));
+                },
+                label: const Text(
+                  'Explore the app',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                ),
                 icon: const Icon(Icons.arrow_forward),
                 style: ElevatedButton.styleFrom(
-                  foregroundColor: const Color.fromRGBO(33, 65, 45, 100),
-                  fixedSize: const Size(200, 60),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))
-                ),
+                    foregroundColor: const Color.fromRGBO(33, 65, 45, 100),
+                    fixedSize: const Size(200, 60),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10))),
               ),
               const Spacer(),
               Row(
