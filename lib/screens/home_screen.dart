@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:recipe_app/utils/color.dart';
+import 'package:recipe_app/widgets/recipe_card.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -52,45 +53,94 @@ class HomeScreen extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: 10),
-                Row(children: [
-                  Container(
-                  width: 100,
-                  height: 100,
-                  decoration: BoxDecoration(
-                      color: recipeAppPrimaryColor,
-                      borderRadius: BorderRadius.circular(16)),
-                  child: const Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(Icons.star, color: Colors.white, size: 32,),
-                      const SizedBox(height: 10),
-                      Text(
-                        'Special',
-                        style: TextStyle(color: Colors.white, fontSize: 16),
-                      )
-                    ],
-                  ),
+                Row(
+                  children: [
+                    Container(
+                      width: 100,
+                      height: 100,
+                      decoration: BoxDecoration(
+                          color: recipeAppPrimaryColor,
+                          borderRadius: BorderRadius.circular(16)),
+                      child: const Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.star,
+                            color: Colors.white,
+                            size: 32,
+                          ),
+                          const SizedBox(height: 10),
+                          Text(
+                            'Special',
+                            style: TextStyle(color: Colors.white, fontSize: 16),
+                          )
+                        ],
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    Container(
+                      width: 100,
+                      height: 100,
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(16)),
+                      child: const Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.food_bank,
+                            color: recipeAppPrimaryColor,
+                            size: 32,
+                          ),
+                          const SizedBox(height: 10),
+                          Text(
+                            'Breakfast',
+                            style: TextStyle(
+                                color: recipeAppPrimaryColor, fontSize: 16),
+                          )
+                        ],
+                      ),
+                    )
+                  ],
                 ),
-                const SizedBox(width: 10,),
-                  Container(
-                  width: 100,
-                  height: 100,
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(16)),
-                  child: const Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(Icons.food_bank, color: recipeAppPrimaryColor, size: 32,),
-                      const SizedBox(height: 10),
-                      Text(
-                        'Breakfast',
-                        style: TextStyle(color: recipeAppPrimaryColor, fontSize: 16),
-                      )
+                const SizedBox(
+                  height: 20,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text('Need to try', style: TextStyle(fontSize: 32)),
+                    TextButton.icon(
+                      iconAlignment: IconAlignment.end,
+                      onPressed: () {},
+                      icon: const Icon(
+                        Icons.arrow_forward,
+                        color: recipeAppPrimaryColor,
+                      ),
+                      label: const Text('See All',
+                          style: TextStyle(
+                              fontSize: 22,
+                              fontWeight: FontWeight.bold,
+                              color: recipeAppPrimaryColor)),
+                    )
+                  ],
+                ),
+                const SizedBox(height: 20),
+                SizedBox(
+                  height: 450,
+                  child: ListView(
+                    scrollDirection: Axis.horizontal,
+                    children: const [
+                      RecipeCard(),
+                      SizedBox(width: 20),
+                      RecipeCard(),
+                      SizedBox(width: 20),
+                      RecipeCard(),
                     ],
                   ),
                 )
-                ],)
               ],
             ),
           ),
