@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:recipe_app/screens/home_screen.dart';
+import 'package:recipe_app/screens/nav_screen.dart';
 import 'package:recipe_app/utils/color.dart';
 
 class AuthScreen extends StatelessWidget {
@@ -65,7 +65,7 @@ class AuthScreen extends StatelessWidget {
                 onPressed: () {
                   Navigator.of(context)
                       .push(MaterialPageRoute(builder: (context) {
-                    return const HomeScreen();
+                    return const NavScreen();
                   }));
                 },
                 label: const Text(
