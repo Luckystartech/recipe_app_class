@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:recipe_app/api/recipe_api_service.dart';
 import 'package:recipe_app/utils/color.dart';
 import 'package:recipe_app/widgets/recipe_card.dart';
 
@@ -70,7 +71,7 @@ class HomeScreen extends StatelessWidget {
                               color: Colors.white,
                               size: 32,
                             ),
-                            const SizedBox(height: 10),
+                            SizedBox(height: 10),
                             Text(
                               'Special',
                               style:
@@ -79,9 +80,7 @@ class HomeScreen extends StatelessWidget {
                           ],
                         ),
                       ),
-                      const SizedBox(
-                        width: 10,
-                      ),
+                      const SizedBox(width: 10),
                       Container(
                         width: 100,
                         height: 100,
@@ -96,7 +95,7 @@ class HomeScreen extends StatelessWidget {
                               color: recipeAppPrimaryColor,
                               size: 32,
                             ),
-                            const SizedBox(height: 10),
+                            SizedBox(height: 10),
                             Text(
                               'Breakfast',
                               style: TextStyle(
@@ -131,17 +130,36 @@ class HomeScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 20),
                   SizedBox(
-                    height: 360,
-                    child: ListView(
-                      scrollDirection: Axis.horizontal,
-                      children: const [
-                        RecipeCard(),
-                        SizedBox(width: 20),
-                        RecipeCard(),
-                        SizedBox(width: 20),
-                        RecipeCard(),
-                      ],
-                    ),
+                    height: 390,
+                    child: FutureBuilder(
+                        future: fetchRecipes(),
+                        builder: (context, snapShot) {
+                          if (snapShot.connectionState ==
+                              ConnectionState.waiting) {
+                            return const Center(
+                              child: CircularProgressIndicator.adaptive(),
+                            );
+                          }
+
+                          if (snapShot.hasError ||
+                              snapShot.data == null ||
+                              snapShot.data!.isEmpty) {
+                            return  const Center(child: Text('No recipe Found'));
+                          }
+                          final recipes = snapShot.data!;
+                          return ListView.separated(
+                            itemCount: recipes.length,
+                            scrollDirection: Axis.horizontal,
+                            itemBuilder: (context, index) {
+                              return RecipeCard(recipe: recipes[index]);
+                            },
+                            separatorBuilder: (context, index) {
+                              return const SizedBox(
+                                width: 10
+                              );
+                            },
+                          );
+                        }),
                   ),
                   const SizedBox(height: 20),
                   Row(
@@ -165,12 +183,12 @@ class HomeScreen extends StatelessWidget {
                     ],
                   ),
                   const SizedBox(height: 20),
-                   RecipeCard(
-                    width: MediaQuery.sizeOf(context).width,
-                    height: 450,
-                    imageHeight: 300,
-                    isCard: false,
-                  ),
+                  // RecipeCard(
+                  //   width: MediaQuery.sizeOf(context).width,
+                  //   height: 450,
+                  //   imageHeight: 300,
+                  //   isCard: false,
+                  // ),
                 ],
               ),
             ),

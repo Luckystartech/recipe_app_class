@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:recipe_app/models/recipe.dart';
 import 'package:recipe_app/utils/color.dart';
 
 class RecipeDetails extends StatelessWidget {
-  const RecipeDetails({super.key});
+  const RecipeDetails({super.key, required this.recipe});
+
+  final Recipe recipe;
 
   @override
   Widget build(BuildContext context) {
@@ -12,9 +15,9 @@ class RecipeDetails extends StatelessWidget {
         children: [
           Container(
             height: MediaQuery.sizeOf(context).height * 0.5,
-            decoration: const BoxDecoration(
+            decoration:  BoxDecoration(
                 image: DecorationImage(
-                    image: AssetImage('assets/images/recipe_image.jpg'),
+                    image: NetworkImage(recipe.image),
                     fit: BoxFit.cover)),
           ),
           Padding(
@@ -58,7 +61,8 @@ class RecipeDetails extends StatelessWidget {
         ],
       ),
       bottomSheet: BottomSheet(
-          showDragHandle: true,
+          // showDragHandle: true,
+          // enableDrag: false,
           onClosing: () {},
           builder: (context) {
             return Padding(
@@ -70,7 +74,8 @@ class RecipeDetails extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text('Shrimp Scampi Pasta', style: TextStyle(fontSize: 32)),
+                       Text(recipe.name,
+                          style: const TextStyle(fontSize: 32)),
                       SizedBox(
                         width: 250,
                         child: Row(
@@ -94,15 +99,16 @@ class RecipeDetails extends StatelessWidget {
                                     backgroundColor:
                                         recipeAppPrimaryColor.withAlpha(30),
                                     shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(16))),
+                                        borderRadius:
+                                            BorderRadius.circular(16))),
                               ),
                             ),
                             Flexible(
                               child: TextButton.icon(
                                 onPressed: () {},
-                                label: const Text(
-                                  'Easy',
-                                  style: TextStyle(
+                                label:  Text(
+                                  recipe.difficulty,
+                                  style: const TextStyle(
                                       fontSize: 12,
                                       color: recipeAppPrimaryColor,
                                       fontWeight: FontWeight.bold),
@@ -115,14 +121,15 @@ class RecipeDetails extends StatelessWidget {
                                     backgroundColor:
                                         recipeAppPrimaryColor.withAlpha(30),
                                     shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(16))),
+                                        borderRadius:
+                                            BorderRadius.circular(16))),
                               ),
                             ),
                             TextButton.icon(
                               onPressed: () {},
-                              label: const Text(
-                                '300 kCal',
-                                style: TextStyle(
+                              label:  Text(
+                                '${recipe.caloriesPerServing} kCal',
+                                style: const TextStyle(
                                     fontSize: 12,
                                     color: recipeAppPrimaryColor,
                                     fontWeight: FontWeight.bold),
@@ -142,48 +149,27 @@ class RecipeDetails extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 20),
-                      const Text('In Flutter, SliverAppBar is a successor to the AppBar widget, which allows you to create the floating app bar effect. The SliverAppBar expands the AppBar when the screen is scrolled up and collapsed on scroll down.', style: TextStyle(fontSize: 18,)),
-                    const SizedBox(height: 20),
-                  
-                    const Text('Ingredients', style: TextStyle(fontSize: 24)),
-                    const Column(children: [
-                      ListTile(
-                        leading: Icon(Icons.food_bank),
-                        title: Text('Italian Made Pasta'),
-                        subtitle: Text('12 oz'),
-                        trailing: Icon(Icons.check_circle),
-                      ),
-                      ListTile(
-                        leading: Icon(Icons.food_bank),
-                        title: Text('Italian Made Pasta'),
-                        subtitle: Text('12 oz'),
-                        trailing: Icon(Icons.check_circle),
-                      ),
-                      ListTile(
-                        leading: Icon(Icons.food_bank),
-                        title: Text('Italian Made Pasta'),
-                        subtitle: Text('12 oz'),
-                        trailing: Icon(Icons.check_circle),
-                      ),
-                      ListTile(
-                        leading: Icon(Icons.food_bank),
-                        title: Text('Italian Made Pasta'),
-                        subtitle: Text('12 oz'),
-                        trailing: Icon(Icons.check_circle),
-                      ),
-                      ListTile(
-                        leading: Icon(Icons.food_bank),
-                        title: Text('Italian Made Pasta'),
-                        subtitle: Text('12 oz'),
-                        trailing: Icon(Icons.check_circle),
-                      ),
-                      ListTile(
-                        leading: Icon(Icons.food_bank),
-                        title: Text('Italian Made Pasta'),
-                        subtitle: Text('12 oz'),
-                        trailing: Icon(Icons.check_circle),
-                      ),
-                    ],)
+                      const Text(
+                          'In Flutter, SliverAppBar is a successor to the AppBar widget, which allows you to create the floating app bar effect. The SliverAppBar expands the AppBar when the screen is scrolled up and collapsed on scroll down.',
+                          style: TextStyle(
+                            fontSize: 18,
+                          )),
+                      const SizedBox(height: 20),
+                      const Text('Ingredients', style: TextStyle(fontSize: 24)),
+                      SizedBox(
+                        height: 300,
+                        child: ListView.builder(
+                          itemCount: recipe.ingredients.length,
+                          itemBuilder: (context, index) {
+                            return ListTile(
+                              leading: const Icon(Icons.food_bank),
+                              title: Text(recipe.ingredients[index]),
+                              subtitle: const Text('12 oz'),
+                              trailing: const Icon(Icons.check_circle),
+                            );
+                          }
+                        ),
+                      )
                     ],
                   ),
                 ),

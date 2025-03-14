@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:recipe_app/models/recipe.dart';
 import 'package:recipe_app/screens/recipe_details.dart';
 import 'package:recipe_app/utils/color.dart';
 
 class RecipeCard extends StatelessWidget {
-  const RecipeCard(
-      {super.key,
-      this.width = 200,
-      this.height = 360,
-      this.imageHeight = 200,
-      this.isCard = true});
-
+  const RecipeCard({
+    super.key,
+    this.width = 200,
+    this.height = 360,
+    this.imageHeight = 200,
+    this.isCard = true,
+    required this.recipe,
+  });
+  final Recipe recipe;
   final double width;
   final double imageHeight;
   final double height;
@@ -18,8 +21,9 @@ class RecipeCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: (){
-        Navigator.of(context).push(MaterialPageRoute(builder: (context)=>const RecipeDetails() ));
+      onTap: () {
+        Navigator.of(context).push(
+            MaterialPageRoute(builder: (context) =>  RecipeDetails(recipe: recipe,)));
       },
       child: SizedBox(
         width: width,
@@ -36,8 +40,8 @@ class RecipeCard extends StatelessWidget {
                   decoration: BoxDecoration(
                       color: recipeAppPrimaryColor.withAlpha(30),
                       borderRadius: BorderRadius.circular(12)),
-                  child: Image.asset(
-                    'assets/images/recipe_image.jpg',
+                  child: Image.network(
+                    recipe.image,
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -62,14 +66,14 @@ class RecipeCard extends StatelessWidget {
             const SizedBox(
               height: 10,
             ),
-            const Column(
+             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Morning Pancakes',
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                  recipe.name,
+                  style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                 ),
-                Text(
+                const Text(
                     'Create an sRGB color from red, green, blue, and opacity, similar to rgba'),
               ],
             ),
