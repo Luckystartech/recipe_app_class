@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:recipe_app/models/recipe.dart';
+import 'package:recipe_app/providers/bookmark_provider.dart';
 import 'package:recipe_app/screens/recipe_details.dart';
 import 'package:recipe_app/utils/color.dart';
 
-class RecipeCard extends StatelessWidget {
+class RecipeCard extends ConsumerStatefulWidget {
   const RecipeCard({
     super.key,
     this.width = 200,
@@ -19,59 +21,85 @@ class RecipeCard extends StatelessWidget {
   final bool isCard;
 
   @override
+  ConsumerState<RecipeCard> createState() => _RecipeCardState();
+}
+
+class _RecipeCardState extends ConsumerState<RecipeCard> {
+  // late bool isBookMarked;
+
+  // @override
+  // void initState() {
+  //   isBookMarked = false;
+  //   super.initState();
+  // }
+
+  @override
   Widget build(BuildContext context) {
+    final bookMark = ref.watch(bookMarkProvider);
     return GestureDetector(
       onTap: () {
-        Navigator.of(context).push(
-            MaterialPageRoute(builder: (context) =>  RecipeDetails(recipe: recipe,)));
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => RecipeDetails(
+                  recipe: widget.recipe,
+                )));
       },
       child: SizedBox(
-        width: width,
-        height: height,
+        width: widget.width,
+        height: widget.height,
         child: Column(
           children: [
             Stack(
               children: [
                 Container(
-                  width: width,
-                  height: imageHeight,
+                  width: widget.width,
+                  height: widget.imageHeight,
                   padding:
                       const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
                   decoration: BoxDecoration(
                       color: recipeAppPrimaryColor.withAlpha(30),
                       borderRadius: BorderRadius.circular(12)),
                   child: Image.network(
-                    recipe.image,
+                    widget.recipe.image,
                     fit: BoxFit.cover,
                   ),
                 ),
-                if (isCard)
+                if (widget.isCard)
                   Positioned(
                       top: 5,
                       right: 10,
                       child: GestureDetector(
-                        onTap: () {},
+                        onTap: () {
+                          ref
+                              .read(bookMarkProvider.notifier)
+                              .toggleBookMark(widget.recipe);
+                          // setState(() {});
+                        },
                         child: Container(
-                            padding: const EdgeInsets.all(2),
-                            decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(4)),
-                            child: const Icon(
-                              Icons.bookmark_border,
-                              size: 18,
-                            )),
+                          padding: const EdgeInsets.all(2),
+                          decoration: BoxDecoration(
+                              // color: Colors.white,
+                              borderRadius: BorderRadius.circular(4)),
+                          child: Icon(
+                            bookMark.contains(widget.recipe)
+                                ? Icons.bookmark_outlined
+                                : Icons.bookmark_border_outlined,
+                            size: 18,
+                            color: recipeAppPrimaryColor,
+                          ),
+                        ),
                       ))
               ],
             ),
             const SizedBox(
               height: 10,
             ),
-             Column(
+            Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  recipe.name,
-                  style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                  widget.recipe.name,
+                  style: const TextStyle(
+                      fontSize: 24, fontWeight: FontWeight.bold),
                 ),
                 const Text(
                     'Create an sRGB color from red, green, blue, and opacity, similar to rgba'),

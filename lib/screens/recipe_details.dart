@@ -1,24 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:recipe_app/models/recipe.dart';
+import 'package:recipe_app/providers/bookmark_provider.dart';
 import 'package:recipe_app/utils/color.dart';
 
-class RecipeDetails extends StatelessWidget {
+class RecipeDetails extends ConsumerWidget {
   const RecipeDetails({super.key, required this.recipe});
 
   final Recipe recipe;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final bookMark = ref.watch(bookMarkProvider);
     return Scaffold(
       body: Stack(
         // alignment:  AlignmentDirectional.topCenter,
         children: [
           Container(
             height: MediaQuery.sizeOf(context).height * 0.5,
-            decoration:  BoxDecoration(
+            decoration: BoxDecoration(
                 image: DecorationImage(
-                    image: NetworkImage(recipe.image),
-                    fit: BoxFit.cover)),
+                    image: NetworkImage(recipe.image), fit: BoxFit.cover)),
           ),
           Padding(
             padding: const EdgeInsets.only(top: 60, left: 16, right: 16),
@@ -42,7 +44,9 @@ class RecipeDetails extends StatelessWidget {
                       )),
                 ),
                 GestureDetector(
-                  onTap: () {},
+                  onTap: () {
+                    ref.read(bookMarkProvider.notifier).toggleBookMark(recipe);
+                  },
                   child: Container(
                       width: 50,
                       height: 50,
@@ -50,9 +54,12 @@ class RecipeDetails extends StatelessWidget {
                       decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(4)),
-                      child: const Icon(
-                        Icons.bookmark_border,
+                      child: Icon(
+                        bookMark.contains(recipe)
+                            ? Icons.bookmark_outlined
+                            : Icons.bookmark_border,
                         size: 32,
+                        color: recipeAppPrimaryColor,
                       )),
                 )
               ],
@@ -74,8 +81,7 @@ class RecipeDetails extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                       Text(recipe.name,
-                          style: const TextStyle(fontSize: 32)),
+                      Text(recipe.name, style: const TextStyle(fontSize: 32)),
                       SizedBox(
                         width: 250,
                         child: Row(
@@ -106,7 +112,7 @@ class RecipeDetails extends StatelessWidget {
                             Flexible(
                               child: TextButton.icon(
                                 onPressed: () {},
-                                label:  Text(
+                                label: Text(
                                   recipe.difficulty,
                                   style: const TextStyle(
                                       fontSize: 12,
@@ -127,7 +133,7 @@ class RecipeDetails extends StatelessWidget {
                             ),
                             TextButton.icon(
                               onPressed: () {},
-                              label:  Text(
+                              label: Text(
                                 '${recipe.caloriesPerServing} kCal',
                                 style: const TextStyle(
                                     fontSize: 12,
@@ -159,16 +165,15 @@ class RecipeDetails extends StatelessWidget {
                       SizedBox(
                         height: 300,
                         child: ListView.builder(
-                          itemCount: recipe.ingredients.length,
-                          itemBuilder: (context, index) {
-                            return ListTile(
-                              leading: const Icon(Icons.food_bank),
-                              title: Text(recipe.ingredients[index]),
-                              subtitle: const Text('12 oz'),
-                              trailing: const Icon(Icons.check_circle),
-                            );
-                          }
-                        ),
+                            itemCount: recipe.ingredients.length,
+                            itemBuilder: (context, index) {
+                              return ListTile(
+                                leading: const Icon(Icons.food_bank),
+                                title: Text(recipe.ingredients[index]),
+                                subtitle: const Text('12 oz'),
+                                trailing: const Icon(Icons.check_circle),
+                              );
+                            }),
                       )
                     ],
                   ),

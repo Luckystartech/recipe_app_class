@@ -1,3 +1,5 @@
+import 'package:flutter/foundation.dart';
+
 class Recipe {
   const Recipe({
     required this.id,
@@ -45,6 +47,18 @@ class Recipe {
           image: $image
         )
 ''';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+
+    return other is Recipe && other.id == id;
+  }
+
+  @override
+  int get hashCode {
+    return id.hashCode;
   }
 }
 
