@@ -1,0 +1,2 @@
+/Users/Lucky/Documents/Aitech Class/flutter_class/jennifer_class/recipe_app/android/app/.cxx/RelWithDebInfo/2w6y1yw5/armeabi-v7a/CMakeFiles/edit_cache.dir
+/Users/Lucky/Documents/Aitech Class/flutter_class/jennifer_class/recipe_app/android/app/.cxx/RelWithDebInfo/2w6y1yw5/armeabi-v7a/CMakeFiles/rebuild_cache.dir
