@@ -33,6 +33,19 @@ class Recipe {
         image: map['image']);
   }
 
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'name': name,
+      'ingredients': ingredients,
+      'instructions': instructions,
+      'prepTimeMinutes': prepTimeMinutes,
+      'difficulty': difficulty,
+      'caloriesPerServing': caloriesPerServing,
+      'image': image
+    };
+  }
+
   @override
   String toString() {
     return '''
